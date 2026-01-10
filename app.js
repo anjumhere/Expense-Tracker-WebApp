@@ -9,8 +9,8 @@ const addBtn = document.getElementById("btn")
 
 // Add transaction function
 let transaction = [];
-function addTransaction (e){
-  e.preventDefault();
+function addTransaction (){
+//   e.preventDefault();
  // geting the values from the input fields
 const name = transName.value.trim(); // removes the extra spaces in the input field
 const amount = transAmount.value.trim();  
@@ -49,8 +49,34 @@ type: type
   transAmount = '';
 
   updateDisplay();
+}
 
+function updateDisplay(){
+    updateSummary();
+    updateDisplay();
+}
 
+function updateSummary(){
+
+ // Calculate total income (all positive numbers)
+ const totalIncome = transaction
+.filter(item=> item.type === 'income')
+.reduce((sum, item) => sum+item.amount, 0)
+
+// calculate all total expenses (but show as positive)
+ 
+const totalExpense = transaction 
+.filter(item => item.type === 'expense')
+.reduce((sum, item) => sum + Math.abs(item.amount), 0 )
+
+// calculate the total balance
+const balance   = totalIncome - totalExpense;
+
+// add them to html
+
+totalBalance.textContent = `${balance.toFixed(2)}`
+income.textContent = `+$${totalIncome.toFixed(2)}`
+expense.textContent = `-$${totalExpense.toFixed(2)}`
 
 
 }
